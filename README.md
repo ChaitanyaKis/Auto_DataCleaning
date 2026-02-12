@@ -54,19 +54,25 @@ Downcasts numeric types and converts suitable text to category.
 
 ## 📁 Folder Structure
 
+```
 Task_1 - DataCleaning/
+│
 ├── data/
-│ ├── raw/ # Place any CSV dataset here
-│ └── output/ # Cleaned output saved here
+│   ├── raw/        # Place any CSV dataset here
+│   └── output/     # Cleaned output saved here
+│
 ├── src/
-│ ├── cleaner.py # Core pipeline
-│ ├── profiler.py # Dataset analysis
-│ ├── optimizer.py # Memory optimizer
-│ └── utils.py # Helpers
-├── main.py # Entry script
-├── output_data_quality.py # Output quality evaluation
+│   ├── cleaner.py      # Core pipeline
+│   ├── profiler.py     # Dataset analysis
+│   ├── optimizer.py    # Memory optimizer
+│   └── utils.py        # Helpers
+│
+├── main.py                 # Entry script
+├── output_data_quality.py  # Output quality evaluation
 ├── requirements.txt
 └── README.md
+```
+
 
 
 
