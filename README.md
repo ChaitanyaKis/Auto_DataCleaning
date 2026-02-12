@@ -8,98 +8,186 @@ A reusable, dataset-agnostic data cleaning solution that standardizes, imputes, 
 
 This repository provides a fully automated data cleaning engine capable of:
 
-- Detecting input dataset
-- Removing high-null and duplicate entries
-- Normalizing text fields
+- Detecting input datasets automatically
+- Removing high-null columns and duplicate rows
+- Normalizing text features
 - Handling missing values intelligently
 - Detecting and capping outliers
-- Correcting skewness
+- Correcting skewed distributions
 - Optimizing memory usage
 
-The outcome is a production-ready, cleaned CSV suitable for downstream tasks.
+The output is a clean, structured CSV ready for analytics, modeling, or visualization.
 
 ---
 
 ## 🧩 Features
 
 ### ✔ Automatic Dataset Detection
-Automatically picks the first CSV file found in `data/raw/`.
+Automatically selects the first CSV file found in:
 
-### ✔ Column Dropping Based on Missing Data
-Columns with >70% missing values are removed.
-
-### ✔ Duplicate Handling
-Removes exact duplicates.
-
-### ✔ Text Normalization
-Cleans strings (trim, lower-case, missing categorization).
-
-### ✔ Smart Type Conversion
-Attempts numeric conversion when appropriate.
-
-### ✔ Missing Value Strategy
-- Numerical → Median
-- Categorical → “missing”
-
-### ✔ Outlier Capping (IQR)
-Limits extreme values rather than removing data.
-
-### ✔ Skewness Correction
-Applies log transformation for numeric columns with significant skew.
-
-### ✔ Memory Optimization
-Downcasts numeric types and converts suitable text to category.
+```
+data/raw/
+```
 
 ---
 
-## 📁 Folder Structure
+### ✔ Column Removal Based on Missing Data
+Columns containing more than **70% missing values** are automatically dropped.
+
+---
+
+### ✔ Duplicate Handling
+Removes exact duplicate rows to ensure dataset integrity.
+
+---
+
+### ✔ Text Normalization
+Standardizes string values by:
+- trimming whitespace  
+- converting to lowercase  
+- handling empty values  
+
+---
+
+### ✔ Smart Type Conversion
+Attempts numeric conversion when appropriate while preserving valid categorical values.
+
+---
+
+### ✔ Missing Value Strategy
+| Data Type | Strategy |
+|--------|----------|
+Numeric | Median Imputation |
+Categorical | `"missing"` placeholder |
+
+---
+
+### ✔ Outlier Capping (IQR Method)
+Extreme values are capped instead of removed, preserving dataset size.
+
+---
+
+### ✔ Skewness Correction
+Automatically applies log transformation to highly skewed numerical features.
+
+---
+
+### ✔ Memory Optimization
+Reduces memory footprint by:
+- downcasting numeric types
+- converting suitable text columns to categorical dtype
+
+---
+
+## 📁 Project Structure
+
+## 📁 Project Structure
 
 ```
 Task_1 - DataCleaning/
 │
 ├── data/
-│   ├── raw/        # Place any CSV dataset here
-│   └── output/     # Cleaned output saved here
+│   ├── raw/            # Place any CSV dataset here
+│   └── output/         # Cleaned dataset saved here
 │
 ├── src/
-│   ├── cleaner.py      # Core pipeline
-│   ├── profiler.py     # Dataset analysis
-│   ├── optimizer.py    # Memory optimizer
-│   └── utils.py        # Helpers
+│   ├── cleaner.py      # Core cleaning pipeline
+│   ├── profiler.py     # Dataset profiling logic
+│   ├── optimizer.py    # Memory optimization utilities
+│   ├── encoder.py      # Categorical encoding module
+│   ├── scaler.py       # Feature scaling module
+│   ├── visualizer.py   # Outlier visualization (boxplots)
+│   └── utils.py        # Helper utilities
 │
 ├── main.py                 # Entry script
-├── output_data_quality.py  # Output quality evaluation
+├── output_data_quality.py  # Dataset quality evaluation
 ├── requirements.txt
 └── README.md
 ```
 
 
-
-
 ---
 
-## 🚀 Setup
+## ⚙️ Setup
 
-1. Clone repository
-2. Create and activate virtual environment
-3. Install dependencies
+Clone the repository and install dependencies:
 
-
+```bash
 python -m venv venv
 venv/Scripts/activate
 pip install -r requirements.txt
+```
 
+---
 
 ## ▶️ Usage
 
-1. Place any `.csv` file inside:
+### 1. Place dataset
 
+Put any `.csv` file inside:
+
+```
 data/raw/
+```
 
-2. Run the cleaning pipeline:
+---
 
-python main.pu
+### 2. Run pipeline
 
-3. The cleaned dataset will be saved to:
+```bash
+python main.py
+```
 
+---
+
+### 3. Output location
+
+The cleaned dataset will be saved automatically to:
+
+```
 data/output/cleaned_data.csv
+```
+
+---
+
+## 📊 Dataset Quality Evaluation
+
+After cleaning, evaluate the processed dataset:
+
+```bash
+python output_data_quality.py
+```
+
+This generates a structured quality report including:
+
+- Missing values
+- Duplicate rows
+- Outlier count
+- Skewed columns
+- Scaling validation
+- Encoding validation
+- Memory usage
+- Overall quality score
+
+---
+
+## 🎯 Design Goals
+
+This pipeline is designed to be:
+
+- Dataset-agnostic
+- Deterministic
+- Reproducible
+- Efficient
+- Production-ready
+
+No manual preprocessing or dataset-specific configuration is required.
+
+---
+
+## 📜 License
+
+This project is intended for educational and evaluation purposes.
+
+---
+
