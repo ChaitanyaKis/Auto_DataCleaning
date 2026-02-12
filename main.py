@@ -1,35 +1,47 @@
-import os
 import pandas as pd
+import os
+
 from src.cleaner import AutoCleaner
+from src.encoder import Encoder
+from src.scaler import Scaler
+from src.visualizer import Visualizer
 
 
-def find_dataset():
-    raw_path = "data/raw"
-    files = [f for f in os.listdir(raw_path) if f.endswith(".csv")]
-
-    if not files:
-        raise FileNotFoundError("❌ No CSV file found inside data/raw")
-
-    return os.path.join(raw_path, files[0])
+def find_dataset(path="data/raw"):
+    for file in os.listdir(path):
+        if file.endswith(".csv"):
+            return os.path.join(path, file)
+    raise FileNotFoundError("No CSV dataset found in data/raw/")
 
 
 def main():
-    print("\n🔎 Auto Detecting Dataset...\n")
 
     dataset_path = find_dataset()
-    print(f"📂 Found Dataset: {dataset_path}")
 
     df = pd.read_csv(dataset_path)
 
+    # ---------- VISUALIZE BEFORE CLEAN ----------
+    visualizer = Visualizer()
+    visualizer.plot_outliers(df)
+
+    # ---------- CLEAN ----------
     cleaner = AutoCleaner()
-    cleaned_df = cleaner.clean(df)
+    df_clean = cleaner.clean(df)
 
+    # ---------- ENCODE ----------
+    encoder = Encoder()
+    df_encoded = encoder.transform(df_clean)
+
+    # ---------- SCALE ----------
+    scaler = Scaler()
+    df_scaled = scaler.transform(df_encoded)
+
+    # ---------- SAVE ----------
     os.makedirs("data/output", exist_ok=True)
-    output_path = "data/output/cleaned_data.csv"
-    cleaned_df.to_csv(output_path, index=False)
+    df_scaled.to_csv("data/output/cleaned_data.csv", index=False)
 
-    print("\n✅ Cleaning Complete.")
-    print(f"📁 Saved to: {output_path}\n")
+    print("Processing complete.")
+    print("Cleaned dataset saved to: data/output/cleaned_data.csv")
 
 
 if __name__ == "__main__":
